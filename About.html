@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angelo V. Batayen - About Us</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body {
+            background: radial-gradient(circle at 80% 20%, #eef7ff 0%, #d2e9fa 40%, #badbf7 100%);
+            background-attachment: fixed; color: #000000; padding: 140px 20px 60px 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(210, 233, 250, 0.95); border-bottom: 2px solid #000000;
+            display: flex; justify-content: center; gap: 45px; padding: 20px 0; z-index: 1000;
+        }
+        .navbar a { text-decoration: none; color: #000000; font-size: 1.15rem; font-weight: 500; padding: 4px 12px; border-radius: 4px; }
+        .navbar a.active-tab, .navbar a:hover { color: #0a3d40; font-weight: bold; background-color: rgba(255, 255, 255, 0.5); outline: 1px solid #000000; }
+        .portfolio-container { width: 100%; max-width: 1200px; }
+        .section-main-heading { font-size: 3rem; color: #0a3d40; font-family: 'Trebuchet MS', sans-serif; text-transform: uppercase; margin-bottom: 40px; text-align: center; }
+        .split-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; position: relative; }
+        .split-row::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background-color: #000000; transform: translateX(-50%); z-index: 1; }
+        .left-col { padding-right: 20px; position: relative; z-index: 2; }
+        .right-col { padding-left: 20px; position: relative; z-index: 2; }
+        .skills-header { font-size: 2.2rem; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        .skill-list-item { display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 1.05rem; }
+        .checkmark-icon { width: 28px; height: 28px; background-color: #8bc34a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0; }
+        .skill-list-item p { text-decoration: underline; font-weight: bold; }
+        .image-showcase-frame { border-radius: 120px 40px 120px 40px; overflow: hidden; border: 2px solid #000000; max-height: 320px; width: 100%; }
+        .image-showcase-frame img { width: 100%; height: 100%; object-fit: cover; }
+        @media (max-width: 850px) {
+            .navbar { gap: 15px; padding: 15px 5px; }
+            .navbar a { font-size: 1rem; padding: 4px 8px; }
+            .split-row { grid-template-columns: 1fr; }
+            .split-row::after { display: none; }
+            .right-col, .left-col { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active-tab">About us</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="projects.html">Projects</a>
+    </nav>
+
+    <div class="portfolio-container">
+        <h2 class="section-main-heading">About My Work</h2>
+        <div class="split-row">
+            <div class="left-col">
+                <h3 class="skills-header">What I Do</h3>
+                <div class="skill-list-item">
+                    <div class="checkmark-icon">&#10003;</div>
+                    <p>Custom Web Architecture: Building optimized, accessible, and standards-compliant internet platforms scaled specifically to digital market requirements.</p>
+                </div>
+                <div class="skill-list-item">
+                    <div class="checkmark-icon">&#10003;</div>
+                    <p>Full Lifecycle Development: Transitioning concepts safely from wireframes into final production code with dynamic structural pipelines.</p>
+                </div>
+                <div class="skill-list-item">
+                    <div class="checkmark-icon">&#10003;</div>
+                    <p>Responsive Engineering: Creating flawless visual systems that fluidly recalibrate UI across mobile, desktop, and tablet displays.</p>
+                </div>
+            </div>
+            <div class="right-col">
+                <div class="image-showcase-frame">
+                    <img src="Gemini_Generated_Image_pn1la1pn1la1pn1l.png" alt="Angelo Batayen Workspace Snapshot">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

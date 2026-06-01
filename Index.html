@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angelo V. Batayen - Web Developer Portfolio</title>
+    <style>
+        /* --- Base Setup & Color Palette --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 80% 20%, #eef7ff 0%, #d2e9fa 40%, #badbf7 100%);
+            background-attachment: fixed;
+            color: #000000;
+            padding: 140px 20px 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Dynamic Fixed Navigation Bar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(210, 233, 250, 0.95);
+            border-bottom: 2px solid #000000;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            padding: 20px 0;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 1.15rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        .navbar a.active-tab, .navbar a:hover {
+            color: #0a3d40;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.5);
+            outline: 1px solid #000000;
+        }
+
+        /* --- Page Content Wrapper --- */
+        .portfolio-container {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        /* --- Content Views (Toggled via JS) --- */
+        .content-view {
+            display: none;
+            width: 100%;
+        }
+
+        .content-view.active-view {
+            display: block;
+        }
+
+        /* --- Global Structural Dividers --- */
+        .horizontal-divider {
+            width: 100%;
+            height: 2px;
+            background-color: #000000;
+            margin: 25px 0;
+        }
+
+        /* --- Decorative WWW Shield Badge --- */
+        .www-badge {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            width: 130px;
+            height: auto;
+            z-index: 10;
+        }
+
+        /* --- Typography --- */
+        .hero-title-area {
+            padding-left: 5%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .hero-title-area h2 {
+            font-size: 2.8rem;
+            color: #0a3d40;
+            font-weight: normal;
+            font-family: 'Trebuchet MS', sans-serif;
+            line-height: 1.1;
+        }
+
+        .hero-title-area h1 {
+            font-size: 4rem;
+            color: #0a3d40;
+            font-weight: bold;
+            font-family: 'Trebuchet MS', sans-serif;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .section-main-heading {
+            font-size: 3rem;
+            color: #0a3d40;
+            font-family: 'Trebuchet MS', sans-serif;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* --- SAFE HOME PAGE GRID --- */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- WORK & SERVICES SPLIT ROWS --- */
+        .split-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            position: relative;
+        }
+
+        .split-row::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: #000000;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .left-col { padding-right: 20px; position: relative; z-index: 2; }
+        .right-col { padding-left: 20px; position: relative; z-index: 2; }
+
+        /* --- Presentation Card Box Styling --- */
+        .presentation-box {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            width: 100%;
+        }
+
+        /* Contact details structure layout grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            row-gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+                column-gap: 20px;
+            }
+        }
+
+        .contact-entry {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: underline;
+            white-space: nowrap;
+        }
+
+        .contact-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .quote-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            height: 100%;
+        }
+
+        .mini-avatar-circle {
+            width: 55px;
+            height: 55px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Skills Layout */
+        .skills-header {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .skill-list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+
+        .checkmark-icon {
+            width: 28px;
+            height: 28px;
+            background-color: #8bc34a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .skill-list-item p {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        /* Feature Image Mask Frame */
+        .image-showcase-frame {
+            border-radius: 120px 40px 120px 40px;
+            overflow: hidden;
+            border: 2px solid #000000;
+            max-height: 320px;
+            width: 100%;
+        }
+
+        .image-showcase-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- Project Card Container Elements --- */
+        .portfolio-box-title {
+            background-color: #b0b0b0;
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.4);
+            padding: 12px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .portfolio-desc-box {
+            background-color: #b0b0b0;
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.4);
+            padding: 25px;
+            width: 100%;
+        }
+
+        .portfolio-desc-box ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .portfolio-desc-box li {
+            font-size: 1.15rem;
+            font-weight: bold;
+            text-decoration: underline;
+            line-height: 1.5;
+        }
+
+        /* --- Mobile View Breakpoints --- */
+        @media (max-width: 850px) {
+            .navbar { gap: 15px; padding: 15px 5px; }
+            .navbar a { font-size: 1rem; padding: 4px 8px; }
+            .home-grid, .split-row { grid-template-columns: 1fr; gap: 40px; }
+            .split-row::after { display: none; }
+            .right-col, .left-col { padding-left: 0; padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a onclick="switchView('home-view', this)" class="active-tab">Home</a>
+        <a onclick="switchView('about-view', this)">About us</a>
+        <a onclick="switchView('portfolio-view', this)">Portfolio</a>
+        <a onclick="switchView('projects-view', this)">Projects</a>
+    </nav>
+
+    <div class="portfolio-container">
+
+        <svg class="www-badge" viewBox="0 0 100 100">
+            <path d="M10,10 L90,10 L80,75 L50,95 L20,75 Z" fill="black" />
+            <path d="M15,15 L85,15 L76,71 L50,89 L24,71 Z" fill="#b3e5fc" stroke="black" stroke-width="2"/>
+            <circle cx="50" cy="45" r="25" fill="#f8bbd0" stroke="black" stroke-width="2"/>
+            <path d="M30,45 Q50,25 70,45 Q50,65 30,45 Z" fill="none" stroke="black" stroke-width="1.5"/>
+            <path d="M50,20 Q50,45 50,70" fill="none" stroke="black" stroke-width="1.5"/>
+            <path d="M25,45 L75,45" fill="none" stroke="black" stroke-width="1.5"/>
+            <rect x="25" y="38" width="45" height="12" rx="4" fill="white" stroke="black" stroke-width="1.5" transform="rotate(-15 50 45)"/>
+            <text x="28" y="47" font-size="8" font-family="Arial" font-weight="bold" fill="purple" transform="rotate(-15 50 45)">www</text>
+        </svg>
+
+
+        <div id="home-view" class="content-view active-view">
+            <div class="hero-title-area">
+                <h2>I'm Web Developer</h2>
+                <h1>ANGELO V. BATAYEN</h1>
+            </div>
+
+            <div class="horizontal-divider"></div>
+            
+            <div class="home-grid">
+                <div>
+                    <div class="presentation-box contact-grid">
+                        <div class="contact-entry">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="#EA4335"/>
+                                </svg>
+                            </div>
+                            <span>:_angelo@gmail.com</span>
+                        </div>
+                        
+                        <div class="contact-entry">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
+                                </svg>
+                            </div>
+                            <span>:_Angelo Batayen</span>
+                        </div>
+                        
+                        <div class="contact-entry">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.858.002-2.634-1.013-5.112-2.86-6.961A9.776 9.776 0 0 0 11.97 1.158c-5.438 0-9.863 4.42-9.866 9.861-.001 1.725.464 3.407 1.346 4.892l-.994 3.63 3.71-.973zm13.067-7.463c-.3-.15-1.771-.875-2.046-.975-.276-.102-.476-.152-.676.152-.2.302-.776.976-.951 1.176-.175.202-.35.227-.651.077-.301-.15-1.272-.469-2.423-1.496-.895-.798-1.5-1.784-1.276-2.16.226-.375.025-.578-.125-.727-.135-.135-.3-.35-.45-.526-.15-.175-.2-.3-.3-.5s-.05-.375-.025-.525c.025-.15.2-.301.3-.45.1-.15.133-.25.2-.4.067-.15.034-.275-.017-.375-.05-.1-.476-1.149-.652-1.574-.171-.413-.344-.357-.476-.364-.121-.006-.26-.008-.398-.008-.14 0-.367.052-.56.257-.192.205-.733.716-.733 1.744 0 1.028.748 2.022.85 2.16.104.14 1.472 2.247 3.566 3.149.497.215.887.344 1.191.441.5.159.954.137 1.314.083.401-.061 1.771-.724 2.022-1.385.251-.662.251-1.229.176-1.348-.075-.118-.276-.199-.577-.349z" fill="#25D366"/>
+                                </svg>
+                            </div>
+                            <span>:_0992 508 7221</span>
+                        </div>
+                        
+                        <div class="contact-entry">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="#E4405F"/>
+                                </svg>
+                            </div>
+                            <span>:_@Angelocoding</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="presentation-box" style="height: 100%;">
+                        <div class="quote-wrapper">
+                            <div class="mini-avatar-circle">
+                                <div style="width:15px; height:35px; background-color:#78909c; border-radius:3px;"></div>
+                            </div>
+                            <p class="quote-text">
+                                "As a web developer, I design and build responsive websites, handling everything from front-end coding to complete digital solutions".
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="about-view" class="content-view">
+            <h2 class="section-main-heading">About My Work</h2>
+            <div class="split-row">
+                
+                <div class="left-col">
+                    <h3 class="skills-header">What I Do</h3>
+                    
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Custom Web Architecture: Building optimized, accessible, and standards-compliant internet platforms scaled specifically to digital market requirements.</u></p>
+                    </div>
+
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Full Lifecycle Development: Transitioning concepts safely from wireframes into final production code with dynamic structural pipelines.</u></p>
+                    </div>
+
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Responsive Engineering: Creating flawless visual systems that fluidly recalibrate UI across mobile, desktop, and tablet displays.</u></p>
+                    </div>
+                </div>
+
+                <div class="right-col">
+                    <div class="image-showcase-frame">
+                        <img src="Batayen_work.png" alt="Angelo Batayen Workspace Snapshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="portfolio-view" class="content-view">
+            <h2 class="section-main-heading">Portfolio Matrix</h2>
+            <div class="split-row">
+                
+                <div class="left-col">
+                    <h3 class="skills-header">My Core Skills</h3>
+                    
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Front-End Development: Crafting clean, responsive, and interactive user interfaces using HTML5, CSS3, and JavaScript (ES6+).</u></p>
+                    </div>
+
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Modern CSS Frameworks: Utilizing tools like Bootstrap or Tailwind CSS to build layouts efficiently.</u></p>
+                    </div>
+
+                    <div class="skill-list-item">
+                        <div class="checkmark-icon">&#10003;</div>
+                        <p><u>Attention to Detail: Ensuring clean code structure and precise alignment with design requirements.</u></p>
+                    </div>
+                </div>
+
+                <div class="right-col">
+                    <div class="presentation-box">
+                        <div class="quote-wrapper">
+                            <p class="quote-text" style="text-align: center; width: 100%;">
+                                "Leveraging modern tech stacks to deliver highly clean code assets built to match any exact layout requirement safely."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="projects-view" class="content-view">
+            <h2 class="section-main-heading">My Built Projects</h2>
+            <div class="split-row">
+
+                <div class="left-col">
+                    <div class="portfolio-box-title">
+                        NexaDrive (SaaS Landing Page)
+                    </div>
+                    <div class="portfolio-desc-box">
+                        <ul>
+                            <li>This project is a premium, ultra-fast tech startup marketing page that showcases my ability to build flawless mobile-first layouts and implement interactive features like dynamic pricing toggles and dark/light mode switches.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="right-col">
+                    <div class="portfolio-box-title">
+                        SwiftTask (Productivity Dashboard)
+                    </div>
+                    <div class="portfolio-desc-box">
+                        <ul>
+                            <li>This project is a data-driven workflow management portal that demonstrates my skills in handling complex application logic, instant data filtering, and real-time UI state changes without page reloads.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchView(viewId, clickedElement) {
+            const views = document.querySelectorAll('.content-view');
+            views.forEach(view => view.classList.remove('active-view'));
+
+            const tabs = document.querySelectorAll('.navbar a');
+            tabs.forEach(tab => tab.classList.remove('active-tab'));
+
+            document.getElementById(viewId).classList.add('active-view');
+            clickedElement.classList.add('active-tab');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
